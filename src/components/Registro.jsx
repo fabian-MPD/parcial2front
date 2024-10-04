@@ -36,7 +36,7 @@ const Registro = ()=>{
         // console.log(signoEditar);
         // console.log(textoEditar);
         e.preventDefault();
-        fetch(`http://localhost:4000/v1/signos/registro`, {
+        fetch(`https://calculadora-back-six.vercel.app/v1/signos/registro`, {
             method: 'PATCH',
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({rol, ...addcredenciales})

@@ -32,7 +32,7 @@ function AdminHome({user}){
         // console.log(signoEditar);
         // console.log(textoEditar);
         e.preventDefault();
-        fetch(`http://localhost:4000/v1/signos/${categoria}/${signoEditar}`, {
+        fetch(`https://calculadora-back-six.vercel.app/v1/signos/${categoria}/${signoEditar}`, {
             method: 'PATCH',
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({"textoEditar": textoEditar})

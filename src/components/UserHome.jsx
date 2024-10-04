@@ -28,7 +28,7 @@ function UserHome({user}){
     async function handleSelect(event){
         const signoU = event.target.value;
         if(signoU!=="0"){
-            fetch(`http://localhost:4000/v1/signos/${categoriaU}/${signoU}`)
+            fetch(`https://calculadora-back-six.vercel.app/v1/signos/${categoriaU}/${signoU}`)
                 .then(response => response.json())
                 .then(responseData => setTextoSigno(responseData))
         } 
