@@ -36,16 +36,12 @@ const Registro = ()=>{
         // console.log(signoEditar);
         // console.log(textoEditar);
         e.preventDefault();
-        fetch(`http://localhost:4000/v1/signos/registro`, {
+      
+        fetch(`https://calculadora-back-six.vercel.app/v1/signos/registro`, {
             method: 'POST',
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({...addcredenciales})
         }) 
-        // fetch(`https://calculadora-back-six.vercel.app/v1/signos/registro`, {
-        //     method: 'POST',
-        //     headers: {"Content-Type":"application/json"},
-        //     body: JSON.stringify({...addcredenciales})
-        // }) 
         .then(res => res.json())
         .then(resdata =>{
             setrespuesta(resdata);
