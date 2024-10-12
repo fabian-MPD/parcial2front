@@ -5,8 +5,8 @@ import './styles/Registro.css';
 
 const Registro = ()=>{
     const [addcredenciales,setaddcredenciales ]= useState({
-
-        "user":"",
+        "rol":"",
+        "email":"",
         "password":""
     });
     const [rol, setrol]= useState("");
@@ -17,14 +17,14 @@ const Registro = ()=>{
         home("/");
     }
 
-    const addRol =(e)=>{
+    // const addRol =(e)=>{
 
-        const rolasignado = e.target.value;
+    //     const rolasignado = e.target.value;
 
-        if (rolasignado!="0"){
-            setrol(rolasignado);
-        }
-    }
+    //     if (rolasignado!="0"){
+    //         setrol(rolasignado);
+    //     }
+    // }
     const hancredenciales =(e)=>{
 
        const {name, value}= e.target;
@@ -36,11 +36,16 @@ const Registro = ()=>{
         // console.log(signoEditar);
         // console.log(textoEditar);
         e.preventDefault();
-        fetch(`https://calculadora-back-six.vercel.app/v1/signos/registro`, {
-            method: 'PATCH',
+        fetch(`http://localhost:4000/v1/signos/registro`, {
+            method: 'POST',
             headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({rol, ...addcredenciales})
+            body: JSON.stringify({...addcredenciales})
         }) 
+        // fetch(`https://calculadora-back-six.vercel.app/v1/signos/registro`, {
+        //     method: 'POST',
+        //     headers: {"Content-Type":"application/json"},
+        //     body: JSON.stringify({...addcredenciales})
+        // }) 
         .then(res => res.json())
         .then(resdata =>{
             setrespuesta(resdata);
@@ -63,13 +68,13 @@ const Registro = ()=>{
             <form onSubmit={handleClick}>
                 
                 <label htmlFor="">Rol</label>
-                <select name="" id="" value={rol} onChange={addRol}>
+                <select name="rol" id="" value={addcredenciales.rol} onChange={hancredenciales}>
                     <option value="0">Seleccionar Rol</option>
                     <option value="admin">Administrador</option>
                     <option value="user">Usuario Generico</option>
                 </select>
                 <label htmlFor="">Usuario</label>
-                <input type="text" name= "user" value={addcredenciales.user} onChange={hancredenciales} />
+                <input type="text" name= "email" value={addcredenciales.email} onChange={hancredenciales} />
                 <label htmlFor="">Contraseña</label>
                 <input type="password" name = "password" value={addcredenciales.password} onChange={hancredenciales}/>
                 <input type="submit" value="Agregar" id="agregar"/>
