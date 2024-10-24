@@ -1,68 +1,159 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import './styles/UserHome.css';
 import TextSigno from "./TextSigno.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function UserHome({user}){
-    if(user!=="user" || !user){
+function UserHome({user,iduser}){
+    if(user!=="user" || !user){ 
         return <Navigate to="/"/>
     }
     const home = useNavigate();
-    const [textoSigno, setTextoSigno] = useState('');
-    const [categoriaU, setcategoriaU] = useState("");
+   
+    const [codigo, setcodigo] = useState({
+        numero: "",
+        usuario: iduser
+    });
+   
+    const [infoTabla, setInfoTabla] = useState([]);
+    const [texto, setTexto] = useState("");
+   
 
     function goHome(){
         home("/");
     }
 
-    const SelecCategori = (event)=>{
+    const AgregarCodigo = (event)=>{
 
-        const categ = event.target.value;
-        if (categ!="0"){
-            setcategoriaU(categ);
-        }
+        const {name,value} = event.target;
 
+        setcodigo({...codigo,[name]:value})
 
+        setTexto(" ");
+
+      
+      
+        
     }
 
+    useEffect(()=>{
+
+        fetch(`http://localhost:4000/v1/signos/traerusuario/${iduser}`, {
+            method: 'GET',
+            headers: {"Content-Type": "application/json"},
+            // body: JSON.stringify(null)
+        })
+        .then(response => response.json())
+                .then(responseData => {
+                    
+                    if (typeof responseData === "object"){
+                        
+                        setInfoTabla(responseData);
+                    }else{
+                        setTexto(responseData);
+                        
+                    }
+                })
+       
+
+     },[iduser,infoTabla])
+
+    
+    
     async function handleSelect(event){
-        const signoU = event.target.value;
-        if(signoU!=="0"){
-            fetch(`https://calculadora-back-six.vercel.app/v1/signos/${categoriaU}/${signoU}`)
+        event.preventDefault();
+        
+        if(codigo.numero !== "0" && codigo.numero.trim() !== ""){
+            fetch(`http://localhost:4000/v1/signos/codigo`, {
+                method: 'POST',
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({codigo})
+            }) 
                 .then(response => response.json())
-                .then(responseData => setTextoSigno(responseData))
-        } 
-    }
+                .then(responseData => {
 
-    return (
-        <div className="container">
-            <div id="txtSeleccionPage"><h3>Selecciona tu signo zodiacal</h3></div>
-            <h2 id="textoAdmin">Seleccione Categoria</h2>
-            <select id="seleccionC" onClick={SelecCategori}>
-                <option value="0">Selecione </option>
-                <option value="Nino">Niño</option>
-                <option value="Nina">Niña</option>
-                <option value="Hombre">Hombre</option>
-                <option value="Mujer">Mujer</option>
-            </select>
-            <select id="selectSignos" onClick={handleSelect}>
-                <option value="0">Seleciona un signo zodiacal</option>
-                <option value="Aries">Aries</option>
-                <option value="Geminis">Géminis</option>
-                <option value="Cancer">Cáncer</option>
-                <option value="Leo">Leo</option>
-                <option value="Virgo">Virgo</option>
-                <option value="Libra">Libra</option>
-                <option value="Escorpio">Escorpio</option>
-                <option value="Sagitario">Sagitario</option>
-                <option value="Capricornio">Capricornio</option>
-                <option value="Acuario">Acuario</option>
-                <option value="Piscis">Piscis</option>
-            </select>
-            <TextSigno texto={textoSigno}/>
-            <button id="btnHome" onClick={goHome}>Home</button>
-        </div>
-    )
+                    console.log(responseData)
+                    if (typeof responseData === "object"){
+                        
+                        setInfoTabla(prevInfoTabla=> [...prevInfoTabla,responseData]);
+                      
+                        console.log(infoTabla)
+                    }else{
+                        setTexto(responseData);
+                        
+                    }
+                })
+            } 
+            
+        }
+        useEffect(()=>{
+
+            console.log(infoTabla)
+           
+    
+         },[infoTabla])
+    
+        
+        return (
+            <div className="container">
+                <div id="txtSeleccionPage"><h3>REGISTRA TU CODIGO</h3></div>
+                <form action=""  onSubmit={handleSelect}>
+    
+                <label htmlFor="">Codigo</label>
+                <input 
+                    type="number"  
+                    name="numero" 
+                    maxlength="3" 
+                    min="0" 
+                    max="999" 
+                    onInput={(e) => {
+                        if(e.target.value.length > 3) {
+                        e.target.value = e.target.value.slice(0, 3);
+                        }
+                    }}  
+    
+                    value={codigo.numero}
+    
+                    onChange={AgregarCodigo}
+    
+                />
+    
+                <input type="submit" name = "agregar"/>
+    
+                </form>
+                <h3>{texto}</h3>
+                <button id="btnHome" onClick={goHome}>Home</button>
+    
+               {/* Mostrar la tabla solo si infoTabla tiene datos */}
+               {
+                infoTabla.length > 0 && (
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>FECHA</th>
+                                <th>CÓDIGO</th>
+                                <th>PREMIO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {/* Mapeamos todos los registros en el array */}
+                            
+                            {infoTabla.length > 0 && (infoTabla.map((registro, index) => (
+                                <tr key={index}>
+                                    <td>{new Date(registro.fecha).toLocaleDateString()}</td>
+                                    <td>{registro.codigo}</td>
+                                    <td>{registro.premio}</td>
+                                </tr>
+                            )))}
+                        </tbody>
+                    </table>
+                )
+                }
+                  
+    
+                  
+            </div>
+        )
+       
 }
 
 export default UserHome;

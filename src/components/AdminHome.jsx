@@ -1,15 +1,13 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import './styles/AdminHome.css'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function AdminHome({user}){
     if(user!=='admin' || !user){
         return <Navigate to="/"/>
     }
     const home = useNavigate();
-    const [textoEditar, setTextoEditar] = useState("");
-    const [signoEditar, setSignoEditar] = useState("");
-    const [categoria, setcategoria] = useState("");
+    const [infoTabla, setInfoTabla] = useState([]);
 
     function handleSelect(event){
         const signo = event.target.value;
@@ -28,46 +26,67 @@ function AdminHome({user}){
         home("/");
     }
 
-    function handleClick(e){
+    const valor ="utilizado"
+
+    useEffect(()=>{
+
+        fetch(`http://localhost:4000/v1/signos/traer/${valor}`, {
+            method: 'GET',
+            headers: {"Content-Type": "application/json"},
+            // body: JSON.stringify(null)
+        })
+        .then(response => response.json())
+                .then(responseData => {
+                    
+                    if (typeof responseData === "object"){
+                        
+                        setInfoTabla(responseData);
+                    }else{
+                        setTexto(responseData);
+                        
+                    }
+                })
+       
+
+     },[valor])
+   
         // console.log(signoEditar);
         // console.log(textoEditar);
-        e.preventDefault();
-        fetch(`https://calculadora-back-six.vercel.app/v1/signos/${categoria}/${signoEditar}`, {
-            method: 'PATCH',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({"textoEditar": textoEditar})
-        })
-    }
+    
 
     return (
         <div class="container">
-            <h2 id="textoAdmin">Edite el signo</h2>
-            <select id="editCategorias" onClick={SelecCategori}>
-                <option value="0">Selecione categoria</option>
-                <option value="Nino">Niño</option>
-                <option value="Nina">Niña</option>
-                <option value="Hombre">Hombre</option>
-                <option value="Mujer">Mujer</option>
-            </select>
-            <select id="editSignos" onClick={handleSelect}>
-                <option value="0">Seleciona un signo zodiacal</option>
-                <option value="Aries">Aries</option>
-                <option value="Geminis">Géminis</option>
-                <option value="Cancer">Cáncer</option>
-                <option value="Leo">Leo</option>
-                <option value="Virgo">Virgo</option>
-                <option value="Libra">Libra</option>
-                <option value="Escorpio">Escorpio</option>
-                <option value="Sagitario">Sagitario</option>
-                <option value="Capricornio">Capricornio</option>
-                <option value="Acuario">Acuario</option>
-                <option value="Piscis">Piscis</option>
-            </select>
-            <textarea id="textoEditar" cols="50" rows="10" onChange={(e)=> setTextoEditar(e.target.value)}>
-
-            </textarea>
-            <button id="btnEditar" onClick={handleClick}>Editar</button>
+           
+            
             <button id="btnHomeAdmin" onClick={goHome}>Home</button>
+            {/* Mostrar la tabla solo si infoTabla tiene datos */}
+           {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>FECHA</th>
+                            <th>NOMBRE</th>
+                            <th>CEDULA</th>
+                            <th>TELEFONO</th>
+                            <th>CÓDIGO GANADOR</th>
+                            <th>PREMIO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* Mapeamos todos los registros en el array */}
+                        {infoTabla.length > 0 && (infoTabla.map((registro, index) => (
+                            <tr key={index}>
+                                <td>{new Date(registro.fecha).toLocaleDateString()}</td>
+                                <td>{registro.nombre}</td>
+                                <td>{registro.cedula}</td>
+                                <td>{registro.telefono}</td>
+                                <td>{registro.codigo}</td>
+                                <td>{registro.premio}</td>
+                            </tr>
+                        )))}
+                    </tbody>
+                </table>
+            }
         </div>
     )
 }

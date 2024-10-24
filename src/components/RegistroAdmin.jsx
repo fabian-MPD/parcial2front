@@ -3,18 +3,14 @@ import { useEffect, useState } from "react";
 import './styles/Registro.css';
 
 
-const Registro = ()=>{
+const RegistroAdmin = ()=>{
     const [addcredenciales,setaddcredenciales ]= useState({
-        "rol":"user",
+        "rol":"admin",
         "email":"",
-        "password":"",
-        "nombre":"",
-        "fecha":"",
-        "cedula":"",
-        "telefono":"",
-        "ciudad":""
+        "password":""
+        
     });
-    const [rol, setrol]= useState("");
+  
     const [respuesta, setrespuesta]= useState("");
     const home = useNavigate();
     
@@ -42,7 +38,7 @@ const Registro = ()=>{
         // console.log(textoEditar);
         e.preventDefault();
       
-        fetch(`http://localhost:4000/v1/signos/registro`, {
+        fetch(`http://localhost:4000/v1/signos/registroadmin`, {
             method: 'POST',
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({...addcredenciales})
@@ -65,18 +61,8 @@ const Registro = ()=>{
 
      return (
         <div id ="dirRegistro">
-            <h3>REGISTRO DE USUARIO</h3>
+            <h3>REGISTRO DE USUARIO ADMIN</h3>
             <form onSubmit={handleClick}>
-                <label htmlFor="">Nombre</label>
-                <input type="text" name= "nombre" value={addcredenciales.nombre} onChange={hancredenciales} />
-                <label htmlFor="">Cedula</label>
-                <input type="text" name= "cedula" value={addcredenciales.cedula} onChange={hancredenciales} />
-                <label htmlFor="">Ciudad</label>
-                <input type="text" name="ciudad" value={addcredenciales.ciudad} onChange={hancredenciales} />
-                <label htmlFor="">Telefono</label>
-                <input type="text" name= "telefono" value={addcredenciales.telefono} onChange={hancredenciales} />
-                <label htmlFor="">Fecha Nacimiento</label>
-                <input type="date" name= "fecha" value={addcredenciales.fecha} onChange={hancredenciales} />
                 <label htmlFor="">Gmail</label>
                 <input type="text" name= "email" value={addcredenciales.email} onChange={hancredenciales} />
                 <label htmlFor="">Contraseña</label>
@@ -89,4 +75,4 @@ const Registro = ()=>{
 
 }
 
-export default Registro;
+export default RegistroAdmin;

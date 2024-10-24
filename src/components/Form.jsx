@@ -1,79 +1,72 @@
-import './styles/Form.css'
+
+
+import './styles/Form.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Form({callback}){
-    const [username, setUsername] = useState(null);
-    const [password, setPassword] = useState(null);
+function Form({ callback, setiduser }) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [resultado, setResultado] = useState('');
-    const [texto11, settexso11] = useState('');
-    const Navigate = useNavigate();
-
-
-    const Registra =()=>{
-        Navigate ('/registro');
-    }
-    const  restablecerPassword=()=>{
-        Navigate ('/retablecer');
-    }
+    const [texto11, setTexto11] = useState(''); // Necesitas inicializar este estado
     
-    const validateUser = (event)=>{
+    const navigate = useNavigate();
+
+    const registra = () => {
+        navigate('/registro');
+    };
+
+    const restablecerPassword = () => {
+        navigate('/restablecer');
+    };
+
+    const validateUser = async (event) => {
         event.preventDefault();
-
       
-        fetch('https://calculadora-back-six.vercel.app/v1/signos/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'},
-              body: JSON.stringify({username,password}) 
-            
-        })
-            .then(res =>res.json())
-            .then(responseData => {
-              setResultado(responseData);
-              console.log(resultado);
-              
+        try {
+            const res = await fetch('http://localhost:4000/v1/signos/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
             });
-          
-        
-    
-            if(resultado === 'user' ){
-                callback("user");
-              
-                Navigate("/userHome");
-            }else if(resultado === 'admin' ){
-                callback("admin");
-                Navigate('/adminHome')
-               
-        
-        
+
+            const responseData = await res.json();
+            setResultado(responseData);
+
+            const { usuario, id } = responseData;
+
+            if (usuario === 'user') {
+                setiduser(id);
+                callback('user');
+                navigate('/userHome');
+            } else if (usuario === 'admin') {
+                callback('admin');
+                navigate('/adminHome');
+            } else if (responseData === 'usuario o contaseña invalida') {
+                setTexto11(responseData);
             }
+        } catch (error) {
+            console.error('Error al validar el usuario:', error);
+            setTexto11('Error en la conexión');
+        }
+    };
 
-            if(resultado === "Credenciales incorrectas"){
-
-                settexso11(resultado);
-            }
-
-    }   
-
-
-    
     return (
-        <form id ="form1 "onSubmit={validateUser}>
-            <h1 id="txtBienvenida">Bienvenido a nuestro portal del Zodiaco</h1>
-            <h4 className="txt">Nombre de Usuario</h4>  
-            <input type="text" className="entry" onChange={(e)=> setUsername(e.target.value)}/><br></br>
-            <h4 className="txt">Contraseña</h4>  
-            <input type="password" className="entry" onChange={(e)=> setPassword(e.target.value)}/><br></br>
-            <h6 id = "texto">{texto11}</h6>
-            <input type="submit" value="Ingresar" id="btnEnviar"/>
-            <button onClick={Registra}>Registrate</button>
-            <a id = "texto" href="#" onClick={restablecerPassword}>Restablecer Contraseña</a>
+        <form id="form1" onSubmit={validateUser}>
+            <h1 id="txtBienvenida">Bienvenido a nuestro portal de Premios</h1>
+            <h4 className="txt">Nombre de Usuario</h4>
+            <input type="text" className="entry" onChange={(e) => setUsername(e.target.value)} /><br></br>
+            <h4 className="txt">Contraseña</h4>
+            <input type="password" className="entry" onChange={(e) => setPassword(e.target.value)} /><br></br>
+            <h6 id="texto">{texto11}</h6>
+            <input type="submit" value="Ingresar" id="btnEnviar" />
+            <button type="button" onClick={registra}>Registrate</button>
+            
         </form>
-        
-
-        
-    )
+    );
 }
 
 export default Form;
+
