@@ -34,7 +34,7 @@ const Restablecer = ()=>{
 
         e.preventDefault();
         
-        fetch(`https://parcial2back-yn1m.vercel.app/v1/signos/restablecer`,{
+        fetch(`https://parcial2back.vercel.app/v1/signos/restablecer`,{
 
             method:'PATCH',
             headers: {"content-Type":"application/json"},

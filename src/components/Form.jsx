@@ -24,7 +24,7 @@ function Form({ callback, setiduser }) {
         event.preventDefault();
       
         try {
-            const res = await fetch('https://parcial2back-yn1m.vercel.app/v1/signos/login', {
+            const res = await fetch('https://parcial2back.vercel.app/v1/signos/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
