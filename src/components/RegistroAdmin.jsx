@@ -38,7 +38,7 @@ const RegistroAdmin = ()=>{
         // console.log(textoEditar);
         e.preventDefault();
       
-        fetch(`https://parcial2back.vercel.app/v1/signos/registroadmin`, {
+        fetch(`https://parcial2back-yn1m.vercel.app/v1/signos/registroadmin`, {
             method: 'POST',
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify({...addcredenciales})

@@ -37,7 +37,7 @@ function UserHome({user,iduser}){
 
     useEffect(()=>{
 
-        fetch(`https://parcial2back.vercel.app/v1/signos/traerusuario/${iduser}`, {
+        fetch(`https:/parcial2back-yn1m.vercel.app/v1/signos/traerusuario/${iduser}`, {
             method: 'GET',
             headers: {"Content-Type": "application/json"},
             // body: JSON.stringify(null)
@@ -63,7 +63,7 @@ function UserHome({user,iduser}){
         event.preventDefault();
         
         if(codigo.numero !== "0" && codigo.numero.trim() !== ""){
-            fetch(`https://parcial2back.vercel.app/v1/signos/codigo`, {
+            fetch(`https://parcial2back-yn1m.vercel.app/v1/signos/codigo`, {
                 method: 'POST',
                 headers: {"Content-Type":"application/json"},
                 body: JSON.stringify({codigo})
