@@ -5,7 +5,8 @@ import AdminHome from './components/AdminHome';
 import Registro from './components/Registro';
 import Restablecer from './components/Restablecer';
 import RegistroAdmin from './components/RegistroAdmin';
-import buscar from './components/buscar';
+import BuscarVideos from './components/BuscarVideos';
+
 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'; 
 import { useState } from 'react';
@@ -24,7 +25,9 @@ function App() {
         <Route path='/registro' element={<Registro />}></Route>
         <Route path='/retablecer' element={<Restablecer/>}></Route>
         <Route path='/registroAdmin' element={<RegistroAdmin/>}></Route>
-        <Route path='/buscarvideo' element={<buscar/>}></Route>
+        <Route path='/buscarvideo' element={<BuscarVideos/>}></Route>
+
+        {/* <Route path='/buscarvideo' element={<buscar/>}></Route> */}
       </Routes>
     </BrowserRouter>
   )

@@ -4,7 +4,7 @@ import "./styles/UserHome.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function buscar() {
+function BuscarVideos() {
     const [videos, setVideos] = useState([]); // Todos los videos
     const [searchTerm, setSearchTerm] = useState(""); // Término de búsqueda
     const [filteredVideos, setFilteredVideos] = useState([]); // Videos filtrados
@@ -117,4 +117,4 @@ function buscar() {
     );
 }
 
-export default buscar;
+export default BuscarVideos;
