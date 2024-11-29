@@ -328,7 +328,7 @@ function UserHome({ user, iduser }) {
 
       try {
         await axios.post(
-          `https://parcial2back.vercel.app/v1/signos/upload-chunk`,
+          `http://localhost:4000/v1/signos/upload/${iduser}`,
           formData,
           {
             timeout: 60000,
