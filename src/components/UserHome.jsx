@@ -331,6 +331,7 @@ function UserHome({ user, iduser }) {
           `https://parcial2back.vercel.app/v1/signos/upload-chunk`,
           formData,
           {
+            timeout: 60000,
             headers: { "Content-Type": "multipart/form-data" },
             onUploadProgress: (event) => {
               setProgress(
