@@ -5,7 +5,7 @@ import AdminHome from './components/AdminHome';
 import Registro from './components/Registro';
 import Restablecer from './components/Restablecer';
 import RegistroAdmin from './components/RegistroAdmin';
-import BuscarVideo from './components/buscarVideo';
+import BuscarVideo from './components/buscarVideo.jsx';
 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'; 
 import { useState } from 'react';
