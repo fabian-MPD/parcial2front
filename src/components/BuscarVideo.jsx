@@ -13,7 +13,7 @@ function BuscarVideo() {
     useEffect(() => {
         async function fetchVideos() {
             try {
-                const response = await axios.get(`http://localhost:4000/v1/signos/videos`);
+                const response = await axios.get(`https://parcial2back.vercel.app/v1/signos/videos`);
                 setVideos(response.data); // Guardar todos los videos obtenidos
                 console.log(videos)
             } catch (error) {
