@@ -30,17 +30,6 @@ function App() {
   )
 }
 
-// function Navigation(){
-//   return <nav>
-//     <ul>
-//       <li>
-//         <Link to="/userHome">userHome</Link>
-//       </li>
-//       <li>
-//         <Link to="/adminHome">adminHome</Link>
-//       </li>
-//     </ul>
-//   </nav>
-// }
+
 
 export default App
