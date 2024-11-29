@@ -50,7 +50,7 @@ function UserHome({ user,iduser}) {
   
         try {
             setUploading(true);
-            const response = await axios.post(`http://localhost:4000/v1/signos/upload/${iduser}`, formData, {
+            const response = await axios.post(`https://parcial2back.vercel.app/v1/signos/upload/${iduser}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
   
